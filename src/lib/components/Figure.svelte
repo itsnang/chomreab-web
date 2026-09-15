@@ -69,7 +69,7 @@
 	   outside the plate so they never disturb its own layout. */
 	.plate {
 		position: relative;
-		padding: 0.5rem;
+		padding: 1rem;
 		background-image: radial-gradient(var(--dot) 1px, transparent 1px);
 		background-size: 12px 12px;
 		background-position: -1px -1px;

@@ -59,7 +59,9 @@
 
 	<div class="out" aria-live="polite">
 		{#if sent.length === 0}
-			<p class="hint">Mark someone — see what their parent gets.</p>
+			<!-- An outline the shape of the message that will land here, rather
+			     than an empty gap: the slot reads as waiting, not as broken. -->
+			<p class="waiting">Mark someone — see what their parent gets.</p>
 		{:else}
 			{#each sent as message (message.id)}
 				<Bubble text={message.text} />
@@ -128,13 +130,15 @@
 		display: flex;
 		flex-direction: column;
 		gap: 0.5rem;
-		min-height: 3.5rem;
 	}
 
-	.hint {
+	.waiting {
+		border: 1px dashed var(--rule-strong);
+		border-radius: 1rem 1rem 1rem 0.25rem;
+		padding: 0.85rem 0.9rem;
 		font-size: 0.8125rem;
 		color: var(--ink-faint);
-		font-style: italic;
+		background: hsl(0 0% 100% / 0.45);
 	}
 
 	@media (max-width: 30rem) {

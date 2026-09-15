@@ -52,17 +52,25 @@
 		border: 1px solid var(--rule-strong);
 		border-radius: calc(var(--radius) * 0.55);
 		background: var(--card);
-		color: var(--ink-soft);
+		/* Full ink, not --ink-soft: these are the one thing on the page asking
+		   to be pressed, and softened labels read as already-disabled. */
+		color: var(--ink);
 		cursor: pointer;
+		box-shadow: 0 1px 0 hsl(0 0% 6.3% / 0.04);
 		transition:
 			background 120ms ease,
 			color 120ms ease,
-			border-color 120ms ease;
+			border-color 120ms ease,
+			transform 120ms ease;
 	}
 
 	.seg:hover:not(.selected) {
-		border-color: var(--ink-faint);
-		color: var(--ink);
+		border-color: var(--ink);
+		background: var(--paper);
+	}
+
+	.seg:active {
+		transform: translateY(1px);
 	}
 
 	.seg.selected[data-status='present'] {
