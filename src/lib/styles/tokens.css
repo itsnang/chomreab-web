@@ -20,8 +20,8 @@
 
 	/* The register's ruling. Deliberately hairline-thin — this is the
 	   motif the whole page hangs on, and heavy lines read as table chrome. */
-	--rule: hsl(60 7.4% 89.4%);
-	--rule-strong: hsl(60 7.4% 82%);
+	--rule: hsl(60 7.4% 86%);
+	--rule-strong: hsl(60 7.4% 78%);
 
 	/* Attendance signals — identical to the product's segmented control */
 	--present: hsl(145 46.4% 33.1%);
@@ -30,6 +30,14 @@
 	--late-muted: hsl(42 60% 92.2%);
 	--absent: hsl(2 45.5% 45.3%);
 	--absent-muted: hsl(6 60% 92.2%);
+
+	/* The three above are tuned for *filled* use — coloured text on their own
+	   muted background, as in the segmented control, where contrast is fine.
+	   Set as type directly on paper they are a different problem: --late lands
+	   at 2.38:1, well under AA. These are the variants to use for text. */
+	--present-text: hsl(145 46.4% 34%);
+	--late-text: hsl(40 70% 32%);
+	--absent-text: hsl(2 52% 42%);
 
 	--radius: 0.6875rem;
 

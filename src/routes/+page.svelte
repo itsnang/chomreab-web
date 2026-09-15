@@ -1,26 +1,59 @@
 <script lang="ts">
-	import Row from '$lib/components/Row.svelte';
+	import Band from '$lib/components/Band.svelte';
+	import Cells from '$lib/components/Cells.svelte';
 	import RosterDemo from '$lib/components/RosterDemo.svelte';
 	import Bubble from '$lib/components/Bubble.svelte';
 	import Wordmark from '$lib/components/Wordmark.svelte';
 
 	const CONTACT = 'mailto:lorn.samnang.it@gmail.com?subject=Chomreab%20demo';
 
+	/* Facts about how the product works — deliberately not customer counts.
+	   There are no customers yet, and inventing traction is the one thing a
+	   page like this can do that can't be walked back. */
+	const facts = [
+		{ figure: '3', unit: 'taps', note: 'to mark one student — present, late or absent.' },
+		{ figure: '0', unit: 'apps', note: 'for a parent to install. The message arrives in Telegram.' },
+		{ figure: '20', unit: 'days', note: 'of attendance history behind every rate you see.' }
+	];
+
 	const steps = [
 		{
 			n: '01',
-			head: 'The teacher marks the register',
-			body: 'Their classes for the day are already on screen. Three taps per student — present, late, absent — and a note if there is a reason worth recording. It works on the phone in their pocket.'
+			head: 'The teacher marks',
+			body: "Today's classes are already on screen. Three taps a student, and a note when there's a reason worth recording."
 		},
 		{
 			n: '02',
-			head: "The parent's phone buzzes",
-			body: 'Not an app they have to install. A message in Telegram, which they already use, from the moment the teacher saves. Nothing is sent for a student left unmarked.'
+			head: 'The parent hears',
+			body: 'A Telegram message the moment the register is saved. Nothing is sent for a student left unmarked.'
 		},
 		{
 			n: '03',
-			head: 'The record keeps itself',
-			body: 'Every mark, every correction, who made it and when. You can answer "was she here last Tuesday?" without anyone going through paper.'
+			head: 'The record keeps',
+			body: 'Every mark and every correction, with who made it and when. Answerable months later.'
+		}
+	];
+
+	const faqs = [
+		{
+			q: 'What if a parent does not use Telegram?',
+			a: 'Then they will not receive messages, and the register still works exactly as it does today — attendance is recorded either way. In practice Telegram is near-universal in Cambodia, which is why it was chosen over SMS, which costs money per message, or an app, which nobody would install.'
+		},
+		{
+			q: 'How does a parent get connected?',
+			a: 'You generate a code for their child and hand it over, or send them a link they tap once. There is no account for them to create and no password for them to lose.'
+		},
+		{
+			q: 'Do teachers need training?',
+			a: 'The register screen is a list of names and three buttons. If a teacher can use a phone, they can mark attendance. The parts that need explaining — adding students, generating codes — are yours, not theirs.'
+		},
+		{
+			q: 'What happens when a teacher marks the wrong student?',
+			a: 'They change it, and the correction is recorded alongside the original — what it was, what it became, who changed it, when. Nothing is quietly overwritten.'
+		},
+		{
+			q: 'Can I try it with my own classes?',
+			a: 'Yes — that is what a demo is. Tell me roughly how many classes and students you have and it gets set up with your real timetable, so you are looking at your school rather than sample data.'
 		}
 	];
 </script>
@@ -29,203 +62,285 @@
 	<title>Chomreab — attendance that reaches the parent</title>
 	<meta
 		name="description"
-		content="A teacher marks the register in three taps. The parent knows before the lesson ends. Attendance and parent notifications for schools and tutoring centres."
+		content="A teacher marks the register in three taps. The parent knows before the lesson ends. Attendance and parent notifications for schools and tutoring centres in Cambodia."
 	/>
 </svelte:head>
 
-<header class="top">
-	<div class="top-inner">
+<div class="frame">
+	<header class="top">
 		<Wordmark />
-		<a class="top-cta" href={CONTACT}>Book a demo</a>
-	</div>
-</header>
+		<nav>
+			<a href="#how">How it works</a>
+			<a href="#faq">Questions</a>
+			<a class="top-cta" href={CONTACT}>Book a demo</a>
+		</nav>
+	</header>
 
-<main>
 	<!-- Hero -->
-	<Row label="Today">
+	<Band pad={false}>
 		<div class="hero">
 			<div class="hero-copy">
-				<h1>A teacher taps three times.<br />A parent knows before the lesson ends.</h1>
+				<p class="eyebrow">Attendance · Cambodia</p>
+				<h1>A teacher taps three times. A parent knows before the lesson ends.</h1>
 				<p class="sub">
-					Chomreab is attendance for schools and tutoring centres in Cambodia. The register is
-					marked on a phone, and the families who need to hear about it hear about it the same
-					minute — on Telegram, which they already have.
+					Chomreab is attendance for schools and tutoring centres. The register is marked on a
+					phone, and the families who need to hear about it hear about it the same minute — on
+					Telegram, which they already have.
 				</p>
 				<div class="cta-group">
 					<a class="cta" href={CONTACT}>Book a demo</a>
-					<span class="cta-note">No installation for parents. No app for them to forget.</span>
+					<a class="cta-ghost" href="#how">See how it works</a>
 				</div>
 			</div>
 			<div class="hero-demo">
+				<p class="demo-cap">Try it — this is the real control</p>
 				<RosterDemo />
 			</div>
 		</div>
-	</Row>
+	</Band>
 
-	<!-- The problem -->
-	<Row n="00" label="Before">
-		<div class="prose">
+	<!-- Facts -->
+	<Band pad={false}>
+		<Cells cols={3}>
+			{#each facts as fact (fact.unit)}
+				<div class="fact">
+					<p class="fig"><span>{fact.figure}</span>{fact.unit}</p>
+					<p class="fig-note">{fact.note}</p>
+				</div>
+			{/each}
+		</Cells>
+	</Band>
+
+	<!-- Problem -->
+	<Band label="Before">
+		<div class="two">
 			<h2>Right now, the register is paper</h2>
-			<p>
-				It gets marked, it goes in a drawer, and it is accurate. That is not the problem. The
-				problem is that nobody outside the room knows what it says.
-			</p>
-			<p>
-				A parent finds out their child missed Tuesday when the month's sheet comes home, or when
-				someone finds time to call, or not at all. By then the reason is gone — nobody remembers
-				why, and there is nothing to ask about.
-			</p>
+			<div class="prose">
+				<p>
+					It gets marked, it goes in a drawer, and it is accurate. That is not the problem. The
+					problem is that nobody outside the room knows what it says.
+				</p>
+				<p>
+					A parent finds out their child missed Tuesday when the month's sheet comes home, or when
+					someone finds time to call, or not at all. By then the reason is gone — nobody remembers
+					why, and there is nothing left to ask about.
+				</p>
+			</div>
 		</div>
-	</Row>
+	</Band>
 
 	<!-- How it works -->
-	{#each steps as step (step.n)}
-		<Row n={step.n} label="Step" tight>
-			<div class="step">
-				<h2>{step.head}</h2>
-				<p>{step.body}</p>
-			</div>
-		</Row>
-	{/each}
+	<div id="how">
+		<Band pad={false}>
+			<Cells cols={3}>
+				{#each steps as step (step.n)}
+					<div class="step">
+						<p class="step-n">{step.n}</p>
+						<h3>{step.head}</h3>
+						<p>{step.body}</p>
+					</div>
+				{/each}
+			</Cells>
+		</Band>
+	</div>
 
 	<!-- The message -->
-	<Row label="Sent">
-		<div class="prose">
-			<h2>What the parent actually gets</h2>
-			<p class="lede">
-				Plain messages, in the chat app they already have open. This is the whole parent-facing
-				product — there is no account for them to make and no password for them to lose.
-			</p>
+	<Band label="Sent">
+		<div class="two">
+			<div>
+				<h2>What the parent actually gets</h2>
+				<div class="prose">
+					<p>
+						Plain messages, in the chat app they already have open. This is the whole
+						parent-facing product — no account to make, no password to lose.
+					</p>
+					<p>
+						A note the teacher adds travels with the message. That one line is usually the
+						difference between a parent worrying and a parent knowing.
+					</p>
+				</div>
+			</div>
 			<div class="thread">
-				<Bubble text="You're now linked to Sokha." time="7:02" />
-				<Bubble text="Sokha was marked ✅ present on 2026-09-14." time="7:41" />
+				<Bubble text="You're now linked to Sokha." time="07:02" />
+				<Bubble text="Sokha was marked ✅ present on 2026-09-15." time="07:41" />
+				<Bubble text="Sokha was marked absent today with no note on file." time="07:44" />
 				<Bubble
-					text="Sokha was marked absent today with no note on file."
-					time="7:44"
-				/>
-				<Bubble
-					text="Chenda was marked ⏰ late on 2026-09-14. Note: bus was held up at the market."
-					time="7:46"
+					text="Chenda was marked ⏰ late on 2026-09-15. Note: bus was held up at the market."
+					time="07:46"
 				/>
 			</div>
-			<p class="aside">
-				A note the teacher adds travels with the message. That one line is usually the difference
-				between a parent worrying and a parent knowing.
-			</p>
 		</div>
-	</Row>
+	</Band>
 
-	<!-- Owner value -->
-	<Row n="04" label="Office">
-		<div class="prose">
-			<h2>What you can see, as the person running the place</h2>
-			<ul class="facts">
-				<li>
-					<span class="figure">Attendance rate</span>
-					<span>across the last twenty days, per class and per student.</span>
-				</li>
-				<li>
-					<span class="figure">Chronic absence</span>
-					<span
-						>surfaced before it becomes a conversation you are having too late — students with
-						three or more unexplained absences.</span
-					>
-				</li>
-				<li>
-					<span class="figure">A full history</span>
-					<span
-						>of every change: what it was, what it became, who changed it, and when. Corrections
-						are normal; losing track of them is not.</span
-					>
-				</li>
-			</ul>
-		</div>
-	</Row>
+	<!-- Owner -->
+	<Band label="Office">
+		<h2 class="wide">What you can see, as the person running the place</h2>
+	</Band>
+	<Band pad={false}>
+		<Cells cols={3}>
+			<div class="step">
+				<h3 class="present">Attendance rate</h3>
+				<p>Across the last twenty days, per class and per student.</p>
+			</div>
+			<div class="step">
+				<h3 class="late">Chronic absence</h3>
+				<p>
+					Students with three or more unexplained absences, surfaced before it becomes a
+					conversation you are having too late.
+				</p>
+			</div>
+			<div class="step">
+				<h3 class="absent">A full history</h3>
+				<p>
+					Every change: what it was, what it became, who changed it, when. Corrections are normal;
+					losing track of them is not.
+				</p>
+			</div>
+		</Cells>
+	</Band>
 
-	<!-- CTA -->
-	<Row label="Next">
+	<!-- FAQ -->
+	<div id="faq">
+		<Band label="Questions">
+			<h2 class="wide">Things owners ask</h2>
+			<div class="faq">
+				{#each faqs as faq (faq.q)}
+					<details>
+						<summary>{faq.q}</summary>
+						<p>{faq.a}</p>
+					</details>
+				{/each}
+			</div>
+		</Band>
+	</div>
+
+	<!-- Close -->
+	<Band>
 		<div class="close">
 			<h2>Have a look at it with your own classes</h2>
 			<p>
-				Tell me roughly how many classes and students you have and I will set it up with your real
-				timetable, so you are looking at your school rather than a demo account.
+				Tell me roughly how many classes and students you have and it gets set up with your real
+				timetable — so you are looking at your school, not a demo account.
 			</p>
 			<a class="cta" href={CONTACT}>Book a demo</a>
 		</div>
-	</Row>
-</main>
+	</Band>
 
-<footer>
-	<div class="foot-inner">
+	<footer>
 		<Wordmark />
 		<span class="foot-note">Attendance for schools and tutoring centres. Built in Cambodia.</span>
-	</div>
-</footer>
+	</footer>
+</div>
 
 <style>
-	.top {
-		border-bottom: 1px solid var(--rule);
-		position: sticky;
-		top: 0;
-		background: hsl(60 11.1% 96.5% / 0.88);
-		backdrop-filter: blur(8px);
-		z-index: 10;
+	/* The sheet. Left and right rules run the full height behind every band,
+	   which is what turns a stack of sections into one ruled document. */
+	.frame {
+		max-width: var(--measure);
+		margin: 0 auto;
+		border-left: 1px solid var(--rule);
+		border-right: 1px solid var(--rule);
+		min-height: 100vh;
 	}
 
-	.top-inner {
+	.top {
 		display: flex;
 		align-items: center;
 		justify-content: space-between;
 		gap: 1rem;
-		max-width: var(--measure);
-		margin: 0 auto;
-		padding: 0.85rem 1.5rem;
+		padding: 1rem 2rem;
+		border-bottom: 1px solid var(--rule);
+		position: sticky;
+		top: 0;
+		background: var(--paper);
+		z-index: 10;
+	}
+
+	nav {
+		display: flex;
+		align-items: center;
+		gap: 1.5rem;
+		font-size: 0.8125rem;
+		font-weight: 500;
+	}
+
+	nav a {
+		text-decoration: none;
+		color: var(--ink-soft);
+	}
+
+	nav a:hover {
+		color: var(--ink);
 	}
 
 	.top-cta {
-		font-size: 0.8125rem;
 		font-weight: 700;
-		text-decoration: none;
-		padding: 0.45rem 0.85rem;
+		color: var(--ink) !important;
+		padding: 0.4rem 0.8rem;
 		border: 1px solid var(--rule-strong);
 		border-radius: calc(var(--radius) * 0.6);
-		white-space: nowrap;
 	}
 
 	.top-cta:hover {
 		border-color: var(--ink);
 	}
 
-	/* Hero ------------------------------------------------------------- */
+	/* Hero -------------------------------------------------------------- */
 
 	.hero {
 		display: grid;
-		grid-template-columns: minmax(0, 1.05fr) minmax(0, 0.95fr);
-		gap: 3rem;
-		align-items: start;
+		grid-template-columns: minmax(0, 1fr) minmax(0, 0.92fr);
+	}
+
+	.hero-copy {
+		padding: 3.5rem 2rem 3.5rem;
+	}
+
+	.hero-demo {
+		padding: 3.5rem 2rem;
+		border-left: 1px solid var(--rule);
+		background: hsl(60 11.1% 94.5%);
+	}
+
+	.demo-cap {
+		font-family: var(--font-mono);
+		font-size: 0.625rem;
+		letter-spacing: 0.14em;
+		text-transform: uppercase;
+		color: var(--ink-faint);
+		margin-bottom: 0.9rem;
+	}
+
+	.eyebrow {
+		font-family: var(--font-mono);
+		font-size: 0.6875rem;
+		letter-spacing: 0.14em;
+		text-transform: uppercase;
+		color: var(--primary);
+		margin-bottom: 1.1rem;
 	}
 
 	h1 {
-		font-size: clamp(1.9rem, 4.2vw, 3rem);
-		line-height: 1.08;
-		letter-spacing: -0.028em;
+		font-size: clamp(2rem, 3.6vw, 2.9rem);
+		line-height: 1.06;
+		letter-spacing: -0.032em;
 		font-weight: 800;
 		text-wrap: balance;
 	}
 
 	.sub {
-		margin-top: 1.25rem;
-		font-size: 1.0625rem;
+		margin-top: 1.15rem;
+		font-size: 1rem;
 		color: var(--ink-soft);
-		max-width: 34rem;
+		max-width: 32rem;
 	}
 
 	.cta-group {
 		margin-top: 1.75rem;
 		display: flex;
-		flex-direction: column;
-		gap: 0.6rem;
-		align-items: flex-start;
+		align-items: center;
+		gap: 0.75rem;
+		flex-wrap: wrap;
 	}
 
 	.cta {
@@ -243,94 +358,168 @@
 		background: hsl(210 100% 34%);
 	}
 
-	.cta-note {
-		font-size: 0.8125rem;
-		color: var(--ink-faint);
+	.cta-ghost {
+		font-size: 0.875rem;
+		font-weight: 600;
+		color: var(--ink-soft);
+		text-decoration: none;
+		border-bottom: 1px solid var(--rule-strong);
+		padding-bottom: 1px;
 	}
 
-	/* Prose ------------------------------------------------------------ */
+	.cta-ghost:hover {
+		color: var(--ink);
+		border-color: var(--ink);
+	}
+
+	/* Facts ------------------------------------------------------------- */
+
+	.fig {
+		font-family: var(--font-mono);
+		font-size: 0.8125rem;
+		color: var(--ink-faint);
+		display: flex;
+		align-items: baseline;
+		gap: 0.4rem;
+	}
+
+	.fig span {
+		font-size: 2.5rem;
+		font-weight: 600;
+		color: var(--ink);
+		letter-spacing: -0.03em;
+	}
+
+	.fig-note {
+		margin-top: 0.4rem;
+		font-size: 0.875rem;
+		color: var(--ink-soft);
+	}
+
+	/* Bands ------------------------------------------------------------- */
+
+	.two {
+		display: grid;
+		grid-template-columns: minmax(0, 1fr) minmax(0, 1.15fr);
+		gap: 3rem;
+		align-items: start;
+	}
 
 	h2 {
-		font-size: clamp(1.25rem, 2.2vw, 1.6rem);
-		line-height: 1.2;
-		letter-spacing: -0.02em;
+		font-size: clamp(1.3rem, 2.1vw, 1.75rem);
+		line-height: 1.16;
+		letter-spacing: -0.022em;
 		font-weight: 800;
 		text-wrap: balance;
 	}
 
-	.prose,
-	.step,
-	.close {
-		max-width: 42rem;
+	h2.wide {
+		max-width: 34rem;
+	}
+
+	h3 {
+		font-size: 1rem;
+		font-weight: 800;
+		letter-spacing: -0.012em;
 	}
 
 	.prose p,
 	.step p,
 	.close p {
-		margin-top: 0.85rem;
+		margin-top: 0.8rem;
 		color: var(--ink-soft);
-	}
-
-	.lede {
-		font-size: 1.0625rem;
-	}
-
-	.aside {
 		font-size: 0.9375rem;
+	}
+
+	.prose p:first-child {
+		margin-top: 0;
+	}
+
+	.step-n {
+		font-family: var(--font-mono);
+		font-size: 0.75rem;
+		color: var(--ink-faint);
+		margin-bottom: 0.75rem;
+	}
+
+	h3.present {
+		color: var(--present-text);
+	}
+	h3.late {
+		color: var(--late-text);
+	}
+	h3.absent {
+		color: var(--absent-text);
 	}
 
 	.thread {
 		display: flex;
 		flex-direction: column;
 		gap: 0.5rem;
-		margin-top: 1.5rem;
 	}
 
-	.facts {
+	/* FAQ --------------------------------------------------------------- */
+
+	.faq {
+		margin-top: 1.75rem;
+		border-top: 1px solid var(--rule);
+	}
+
+	details {
+		border-bottom: 1px solid var(--rule);
+	}
+
+	summary {
+		cursor: pointer;
+		padding: 0.95rem 0;
+		font-weight: 700;
+		font-size: 0.9375rem;
 		list-style: none;
-		margin: 1.25rem 0 0;
-		padding: 0;
 		display: flex;
-		flex-direction: column;
+		justify-content: space-between;
+		gap: 1rem;
 	}
 
-	.facts li {
-		display: grid;
-		grid-template-columns: minmax(0, 10rem) minmax(0, 1fr);
-		gap: 0.25rem 1.5rem;
-		padding: 0.9rem 0;
+	summary::-webkit-details-marker {
+		display: none;
+	}
+
+	summary::after {
+		content: '+';
+		font-family: var(--font-mono);
+		color: var(--ink-faint);
+		font-weight: 500;
+	}
+
+	details[open] summary::after {
+		content: '−';
+	}
+
+	details p {
+		padding-bottom: 1.1rem;
+		margin: 0;
+		max-width: 44rem;
 		color: var(--ink-soft);
 		font-size: 0.9375rem;
 	}
 
-	.facts li + li {
-		border-top: 1px solid var(--rule);
-	}
-
-	.figure {
-		font-weight: 700;
-		color: var(--ink);
+	.close {
+		max-width: 38rem;
 	}
 
 	.close .cta {
-		margin-top: 1.5rem;
+		margin-top: 1.4rem;
 	}
 
-	/* Footer ----------------------------------------------------------- */
+	/* Footer ------------------------------------------------------------ */
 
 	footer {
-		border-top: 1px solid var(--rule);
-	}
-
-	.foot-inner {
 		display: flex;
 		align-items: center;
 		justify-content: space-between;
 		gap: 1rem;
 		flex-wrap: wrap;
-		max-width: var(--measure);
-		margin: 0 auto;
-		padding: 2rem 1.5rem 3rem;
+		padding: 1.75rem 2rem 2.5rem;
 	}
 
 	.foot-note {
@@ -339,15 +528,36 @@
 	}
 
 	@media (max-width: 62rem) {
-		.hero {
+		.hero,
+		.two {
 			grid-template-columns: 1fr;
-			gap: 2.25rem;
+			gap: 0;
+		}
+
+		.hero-demo {
+			border-left: 0;
+			border-top: 1px solid var(--rule);
+		}
+
+		.two {
+			gap: 1.75rem;
 		}
 	}
 
-	@media (max-width: 40rem) {
-		.facts li {
-			grid-template-columns: 1fr;
+	@media (max-width: 48rem) {
+		.top,
+		footer {
+			padding-left: 1.25rem;
+			padding-right: 1.25rem;
+		}
+
+		.hero-copy,
+		.hero-demo {
+			padding: 2.5rem 1.25rem;
+		}
+
+		nav a:not(.top-cta) {
+			display: none;
 		}
 	}
 </style>
