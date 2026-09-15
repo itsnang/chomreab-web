@@ -88,12 +88,14 @@
 
 <div class="frame">
 	<header class="top">
+		<div class="top-inner">
 		<Wordmark />
 		<nav>
 			<a href="#how">How it works</a>
 			<a href="#faq">Questions</a>
 			<a class="top-cta" href={CONTACT}>Book a demo</a>
 		</nav>
+		</div>
 	</header>
 
 	<!-- Hero -->
@@ -244,7 +246,7 @@
 	</div>
 
 	<!-- Close -->
-	<Band pad={false}>
+	<Band invert>
 		<div class="close">
 			<h2>Have a look at it with your own classes</h2>
 			<p>
@@ -256,33 +258,36 @@
 	</Band>
 
 	<footer>
-		<Wordmark />
-		<span class="foot-note">Attendance for schools and tutoring centres. Built in Cambodia.</span>
+		<div class="foot-inner">
+			<Wordmark />
+			<span class="foot-note">Attendance for schools and tutoring centres. Built in Cambodia.</span>
+		</div>
 	</footer>
 </div>
 
 <style>
-	/* The sheet. Left and right rules run the full height behind every band,
-	   which is what turns a stack of sections into one ruled document. */
+	/* No outer frame: every band spans the viewport and only its content is
+	   held to the measure, so tints and coloured rules reach both edges. */
 	.frame {
-		max-width: var(--measure);
-		margin: 0 auto;
-		border-left: 1px solid var(--rule);
-		border-right: 1px solid var(--rule);
 		min-height: 100vh;
 	}
 
 	.top {
-		display: flex;
-		align-items: center;
-		justify-content: space-between;
-		gap: 1rem;
-		padding: 1rem 2rem;
 		border-bottom: 1px solid var(--rule);
 		position: sticky;
 		top: 0;
 		background: var(--paper);
 		z-index: 10;
+	}
+
+	.top-inner {
+		display: flex;
+		align-items: center;
+		justify-content: space-between;
+		gap: 1rem;
+		max-width: var(--measure);
+		margin: 0 auto;
+		padding: 1rem 2rem;
 	}
 
 	nav {
@@ -523,17 +528,6 @@
 		font-size: 0.9375rem;
 	}
 
-	/* The one inverted section on the page. Saturated brand colour carrying
-	   the same dot texture as the figure plates, so it reads as part of the
-	   document rather than a banner dropped on top of it. */
-	.close {
-		background: var(--primary);
-		color: var(--primary-ink);
-		padding: 4rem 2rem;
-		background-image: radial-gradient(hsl(0 0% 100% / 0.16) 1px, transparent 1px);
-		background-size: 14px 14px;
-	}
-
 	.close h2 {
 		max-width: 22ch;
 	}
@@ -561,12 +555,14 @@
 
 	/* Footer ------------------------------------------------------------ */
 
-	footer {
+	.foot-inner {
 		display: flex;
 		align-items: center;
 		justify-content: space-between;
 		gap: 1rem;
 		flex-wrap: wrap;
+		max-width: var(--measure);
+		margin: 0 auto;
 		padding: 1.75rem 2rem 2.5rem;
 	}
 
@@ -593,8 +589,8 @@
 	}
 
 	@media (max-width: 48rem) {
-		.top,
-		footer {
+		.top-inner,
+		.foot-inner {
 			padding-left: 1.25rem;
 			padding-right: 1.25rem;
 		}
