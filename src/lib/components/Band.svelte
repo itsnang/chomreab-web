@@ -9,8 +9,8 @@
 		label
 	}: {
 		children: Snippet;
-		/** Tints the band and colours its top rule, in the product's own signal
-		 *  palette — the colour says which part of the day you are in. */
+		/** Tints the band in the product's own signal palette — the colour says
+		 *  which part of the day you are in. */
 		tone?: 'present' | 'late' | 'absent' | 'primary';
 		/** Full-strength brand colour with light type, for the one inverted
 		 *  section on the page. */
@@ -23,10 +23,10 @@
 </script>
 
 <!-- One horizontal band of the sheet. The band itself runs the full width of
-     the viewport, so its tint and its coloured rule reach both screen edges;
-     only the content inside is held to the measure. The page is a stack of
-     these with no outer frame, which is what keeps it from looking like a
-     document floating on a desktop. -->
+     the viewport, so its tint reaches both screen edges; only the content
+     inside is held to the measure. The page is a stack of these with no outer
+     frame, which is what keeps it from looking like a document floating on a
+     desktop. -->
 <section class="band" class:invert data-tone={tone}>
 	<div class="inner" class:pad>
 		{#if label}
@@ -67,41 +67,23 @@
 		padding-top: 4rem;
 	}
 
-	/* The top rule carries the colour at full strength; the fill is a wash.
-	   One saturated hairline reads more deliberately than a saturated block. */
-	.band[data-tone]::before {
-		content: '';
-		position: absolute;
-		inset: 0 0 auto;
-		height: 2px;
-	}
-
+	/* Wash only — no coloured rule at the top edge. The tint alone is enough
+	   to say which part of the day a band belongs to, and the saturated
+	   hairlines read as chrome once the bands span the full viewport. */
 	.band[data-tone='present'] {
 		background: var(--wash-present);
-	}
-	.band[data-tone='present']::before {
-		background: var(--present);
 	}
 
 	.band[data-tone='late'] {
 		background: var(--wash-late);
 	}
-	.band[data-tone='late']::before {
-		background: var(--late);
-	}
 
 	.band[data-tone='absent'] {
 		background: var(--wash-absent);
 	}
-	.band[data-tone='absent']::before {
-		background: var(--absent);
-	}
 
 	.band[data-tone='primary'] {
 		background: var(--wash-primary);
-	}
-	.band[data-tone='primary']::before {
-		background: var(--primary);
 	}
 
 	/* Carries the same dot texture as the figure plates, so the inverted band
