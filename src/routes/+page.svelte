@@ -57,7 +57,7 @@
 	const faqs = [
 		{
 			q: 'What if a parent does not use Telegram?',
-			a: 'Then they will not receive messages, and the register still works exactly as it does today — attendance is recorded either way. In practice Telegram is near-universal in Cambodia, which is why it was chosen over SMS, which costs money per message, or an app, which nobody would install.'
+			a: 'Then they will not receive messages, and the register still works exactly as it does today — attendance is recorded either way. In practice Telegram is already on almost every phone, which is why it was chosen over SMS, which costs money per message, or an app, which nobody would install.'
 		},
 		{
 			q: 'How does a parent get connected?',
@@ -82,7 +82,7 @@
 	<title>Chomreab — attendance that reaches the parent</title>
 	<meta
 		name="description"
-		content="A teacher marks the register in three taps. The parent knows before the lesson ends. Attendance and parent notifications for schools and tutoring centres in Cambodia."
+		content="A teacher marks the register in three taps. The parent knows before the lesson ends. Attendance and parent notifications for schools and tutoring centres."
 	/>
 </svelte:head>
 
@@ -102,7 +102,7 @@
 	<Band pad={false}>
 		<div class="hero">
 			<div class="hero-copy">
-				<p class="eyebrow">Attendance · Cambodia</p>
+				<p class="eyebrow">Attendance · Telegram</p>
 				<h1>A teacher taps three times. A parent knows before the lesson ends.</h1>
 				<p class="sub">
 					Chomreab is attendance for schools and tutoring centres. The register is marked on a
@@ -260,7 +260,7 @@
 	<footer>
 		<div class="foot-inner">
 			<Wordmark />
-			<span class="foot-note">Attendance for schools and tutoring centres. Built in Cambodia.</span>
+			<span class="foot-note">Attendance for schools and tutoring centres.</span>
 		</div>
 	</footer>
 </div>
