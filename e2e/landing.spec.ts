@@ -52,11 +52,31 @@ test.describe('landing page', () => {
 		await expect(page.getByText('1/3 marked')).toBeVisible();
 	});
 
-	test('has no detectable accessibility violations', async ({ page }) => {
-		await page.goto('/');
-		const results = await new AxeBuilder({ page })
-			.withTags(['wcag2a', 'wcag2aa', 'wcag21a', 'wcag21aa'])
-			.analyze();
-		expect(results.violations).toEqual([]);
+	// Audited with motion disabled: mid-flight GSAP tweens leave text at partial
+	// opacity, which axe correctly reads as a contrast failure against whatever
+	// is behind it. That makes the run non-deterministic and audits a state no
+	// reader ever settles on. Reduced motion is also the state this must be
+	// correct in, and motion.ts honours it by doing nothing at all.
+	test.describe('with motion disabled', () => {
+		test.use({ reducedMotion: 'reduce' });
+
+		test('has no detectable accessibility violations', async ({ page }) => {
+			await page.goto('/');
+			const results = await new AxeBuilder({ page })
+				.withTags(['wcag2a', 'wcag2aa', 'wcag21a', 'wcag21aa'])
+				.analyze();
+			expect(results.violations).toEqual([]);
+		});
+
+		test('leaves every message visible rather than animating them in', async ({ page }) => {
+			await page.goto('/');
+			const bubbles = page.locator('.bubble');
+			await expect(bubbles).toHaveCount(4);
+			// Nothing is hidden in CSS, so with motion off the thread is simply
+			// complete — no reader is left waiting on a tween that never runs.
+			for (let i = 0; i < 4; i++) {
+				await expect(bubbles.nth(i)).toHaveCSS('opacity', '1');
+			}
+		});
 	});
 });

@@ -35,9 +35,23 @@
 	   muted background, as in the segmented control, where contrast is fine.
 	   Set as type directly on paper they are a different problem: --late lands
 	   at 2.38:1, well under AA. These are the variants to use for text. */
-	--present-text: hsl(145 46.4% 34%);
+	/* 33%, not 34%: it also has to clear AA on the hero's tinted demo panel
+	   (#f3f3ef), which is darker than the paper and where 34% lands at 4.42. */
+	--present-text: hsl(145 46.4% 33%);
 	--late-text: hsl(40 70% 32%);
 	--absent-text: hsl(2 52% 42%);
+
+	/* Band washes. Barely-there tints that let a section carry a signal colour
+	   without becoming a coloured box — the colour reads as which part of the
+	   day you are in, not as decoration. */
+	--wash-present: hsl(140 34% 96.5%);
+	--wash-late: hsl(42 62% 96.5%);
+	--wash-absent: hsl(6 58% 97%);
+	--wash-primary: hsl(210 62% 97%);
+
+	/* Drafting-paper dot, for figure panels. Faint enough to read as tooth in
+	   the paper rather than as a pattern. */
+	--dot: hsl(60 6% 84%);
 
 	--radius: 0.6875rem;
 

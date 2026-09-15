@@ -4,6 +4,26 @@
 	import RosterDemo from '$lib/components/RosterDemo.svelte';
 	import Bubble from '$lib/components/Bubble.svelte';
 	import Wordmark from '$lib/components/Wordmark.svelte';
+	import Figure from '$lib/components/Figure.svelte';
+	import { revealOnScroll, countUp, playThread } from '$lib/motion';
+
+	/* Motion is attached through effects rather than CSS classes so that the
+	   page is complete without it — see the note in $lib/motion.ts. Each
+	   effect returns GSAP's own teardown. */
+	let factsEl = $state<HTMLElement | null>(null);
+	let stepsEl = $state<HTMLElement | null>(null);
+	let threadEl = $state<HTMLElement | null>(null);
+	let ownerEl = $state<HTMLElement | null>(null);
+
+	$effect(() => (factsEl ? revealOnScroll(factsEl, { stagger: '.fact' }) : undefined));
+	$effect(() => (stepsEl ? revealOnScroll(stepsEl, { stagger: '.step' }) : undefined));
+	$effect(() => (ownerEl ? revealOnScroll(ownerEl, { stagger: '.step' }) : undefined));
+	$effect(() => (threadEl ? playThread(threadEl, '.bubble') : undefined));
+
+	function counter(node: HTMLElement) {
+		const stop = countUp(node);
+		return { destroy: stop };
+	}
 
 	const CONTACT = 'mailto:lorn.samnang.it@gmail.com?subject=Chomreab%20demo';
 
@@ -93,26 +113,29 @@
 				</div>
 			</div>
 			<div class="hero-demo">
-				<p class="demo-cap">Try it — this is the real control</p>
-				<RosterDemo />
+				<Figure caption="Fig. 1 — today's register, Grade 3A" live>
+					<RosterDemo />
+				</Figure>
 			</div>
 		</div>
 	</Band>
 
 	<!-- Facts -->
-	<Band pad={false}>
+	<Band pad={false} tone="primary">
+		<div bind:this={factsEl}>
 		<Cells cols={3}>
 			{#each facts as fact (fact.unit)}
 				<div class="fact">
-					<p class="fig"><span>{fact.figure}</span>{fact.unit}</p>
+					<p class="fig"><span use:counter>{fact.figure}</span>{fact.unit}</p>
 					<p class="fig-note">{fact.note}</p>
 				</div>
 			{/each}
 		</Cells>
+		</div>
 	</Band>
 
 	<!-- Problem -->
-	<Band label="Before">
+	<Band label="Before" tone="absent">
 		<div class="two">
 			<h2>Right now, the register is paper</h2>
 			<div class="prose">
@@ -132,6 +155,7 @@
 	<!-- How it works -->
 	<div id="how">
 		<Band pad={false}>
+			<div bind:this={stepsEl}>
 			<Cells cols={3}>
 				{#each steps as step (step.n)}
 					<div class="step">
@@ -141,11 +165,12 @@
 					</div>
 				{/each}
 			</Cells>
+			</div>
 		</Band>
 	</div>
 
 	<!-- The message -->
-	<Band label="Sent">
+	<Band label="Sent" tone="present">
 		<div class="two">
 			<div>
 				<h2>What the parent actually gets</h2>
@@ -160,7 +185,8 @@
 					</p>
 				</div>
 			</div>
-			<div class="thread">
+			<Figure caption="Fig. 2 — one parent's morning">
+			<div class="thread" bind:this={threadEl}>
 				<Bubble text="You're now linked to Sokha." time="07:02" />
 				<Bubble text="Sokha was marked ✅ present on 2026-09-15." time="07:41" />
 				<Bubble text="Sokha was marked absent today with no note on file." time="07:44" />
@@ -169,6 +195,7 @@
 					time="07:46"
 				/>
 			</div>
+			</Figure>
 		</div>
 	</Band>
 
@@ -177,6 +204,7 @@
 		<h2 class="wide">What you can see, as the person running the place</h2>
 	</Band>
 	<Band pad={false}>
+		<div bind:this={ownerEl}>
 		<Cells cols={3}>
 			<div class="step">
 				<h3 class="present">Attendance rate</h3>
@@ -197,6 +225,7 @@
 				</p>
 			</div>
 		</Cells>
+		</div>
 	</Band>
 
 	<!-- FAQ -->
@@ -215,14 +244,14 @@
 	</div>
 
 	<!-- Close -->
-	<Band>
+	<Band pad={false}>
 		<div class="close">
 			<h2>Have a look at it with your own classes</h2>
 			<p>
 				Tell me roughly how many classes and students you have and it gets set up with your real
 				timetable — so you are looking at your school, not a demo account.
 			</p>
-			<a class="cta" href={CONTACT}>Book a demo</a>
+			<a class="cta-invert" href={CONTACT}>Book a demo</a>
 		</div>
 	</Band>
 
@@ -300,15 +329,6 @@
 		padding: 3.5rem 2rem;
 		border-left: 1px solid var(--rule);
 		background: hsl(60 11.1% 94.5%);
-	}
-
-	.demo-cap {
-		font-family: var(--font-mono);
-		font-size: 0.625rem;
-		letter-spacing: 0.14em;
-		text-transform: uppercase;
-		color: var(--ink-faint);
-		margin-bottom: 0.9rem;
 	}
 
 	.eyebrow {
@@ -503,12 +523,40 @@
 		font-size: 0.9375rem;
 	}
 
+	/* The one inverted section on the page. Saturated brand colour carrying
+	   the same dot texture as the figure plates, so it reads as part of the
+	   document rather than a banner dropped on top of it. */
 	.close {
-		max-width: 38rem;
+		background: var(--primary);
+		color: var(--primary-ink);
+		padding: 4rem 2rem;
+		background-image: radial-gradient(hsl(0 0% 100% / 0.16) 1px, transparent 1px);
+		background-size: 14px 14px;
 	}
 
-	.close .cta {
-		margin-top: 1.4rem;
+	.close h2 {
+		max-width: 22ch;
+	}
+
+	.close p {
+		color: hsl(0 0% 100% / 0.82);
+		max-width: 42ch;
+	}
+
+	.cta-invert {
+		display: inline-block;
+		margin-top: 1.5rem;
+		background: var(--paper);
+		color: var(--primary);
+		text-decoration: none;
+		font-weight: 700;
+		font-size: 0.9375rem;
+		padding: 0.7rem 1.25rem;
+		border-radius: calc(var(--radius) * 0.7);
+	}
+
+	.cta-invert:hover {
+		background: var(--card);
 	}
 
 	/* Footer ------------------------------------------------------------ */
