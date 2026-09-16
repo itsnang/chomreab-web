@@ -4,6 +4,14 @@
 	import RosterDemo from '$lib/components/RosterDemo.svelte';
 	import Bubble from '$lib/components/Bubble.svelte';
 	import Wordmark from '$lib/components/Wordmark.svelte';
+	import {
+		DESCRIPTION,
+		OG_IMAGE,
+		OG_IMAGE_ALT,
+		SITE_URL,
+		STRUCTURED_DATA,
+		TITLE
+	} from '$lib/seo';
 	import Figure from '$lib/components/Figure.svelte';
 	import { revealOnScroll, countUp, playThread } from '$lib/motion';
 
@@ -79,11 +87,34 @@
 </script>
 
 <svelte:head>
-	<title>Chomreab — attendance that reaches the parent</title>
-	<meta
-		name="description"
-		content="A teacher marks the register in three taps. The parent knows before the lesson ends. Attendance and parent notifications for schools and tutoring centres."
-	/>
+	<title>{TITLE}</title>
+	<meta name="description" content={DESCRIPTION} />
+	<link rel="canonical" href={SITE_URL} />
+
+	<!-- Open Graph. The image is a raster PNG on purpose: Telegram, Facebook
+	     and LinkedIn will not render an SVG og:image, and Telegram is where
+	     most of this link will actually be shared. -->
+	<meta property="og:type" content="website" />
+	<meta property="og:site_name" content="Chomreab" />
+	<meta property="og:title" content={TITLE} />
+	<meta property="og:description" content={DESCRIPTION} />
+	<meta property="og:url" content={SITE_URL} />
+	<meta property="og:image" content={OG_IMAGE} />
+	<meta property="og:image:type" content="image/png" />
+	<meta property="og:image:width" content="1200" />
+	<meta property="og:image:height" content="630" />
+	<meta property="og:image:alt" content={OG_IMAGE_ALT} />
+	<meta property="og:locale" content="en" />
+
+	<meta name="twitter:card" content="summary_large_image" />
+	<meta name="twitter:title" content={TITLE} />
+	<meta name="twitter:description" content={DESCRIPTION} />
+	<meta name="twitter:image" content={OG_IMAGE} />
+	<meta name="twitter:image:alt" content={OG_IMAGE_ALT} />
+
+	<meta name="theme-color" content="#0066CC" />
+
+	{@html `<script type="application/ld+json">${JSON.stringify(STRUCTURED_DATA)}</script>`}
 </svelte:head>
 
 <div class="frame">
