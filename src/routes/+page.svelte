@@ -33,7 +33,18 @@
 		return { destroy: stop };
 	}
 
-	const CONTACT = 'mailto:lorn.samnang.it@gmail.com?subject=Chomreab%20demo';
+	// The admin app's self-serve signup — a 30-day trial with no call needed.
+	const SIGNUP_URL = 'https://app.chomreab.site/signup';
+
+	/* What a school of a given size actually pays, at $0.10 per active student
+	   per month. Sizes chosen to bracket the real range — a single tutoring
+	   centre, a busy one, a school — so an owner finds their own number here
+	   instead of reaching for a calculator. */
+	const RATE = 0.1;
+	const reckoner = [60, 150, 400].map((students) => ({
+		students,
+		monthly: Math.round(students * RATE)
+	}));
 
 	/* Facts about how the product works — deliberately not customer counts.
 	   There are no customers yet, and inventing traction is the one thing a
@@ -81,7 +92,7 @@
 		},
 		{
 			q: 'Can I try it with my own classes?',
-			a: 'Yes — that is what a demo is. Tell me roughly how many classes and students you have and it gets set up with your real timetable, so you are looking at your school rather than sample data.'
+			a: 'Yes — sign up and you are setting up your own classes and students from the first screen, on a 30-day free trial. No sample data, no call needed first.'
 		}
 	];
 </script>
@@ -123,8 +134,9 @@
 		<Wordmark />
 		<nav>
 			<a href="#how">How it works</a>
+			<a href="#price">Price</a>
 			<a href="#faq">Questions</a>
-			<a class="top-cta" href={CONTACT}>Book a demo</a>
+			<a class="top-cta" href={SIGNUP_URL}>Start free trial</a>
 		</nav>
 		</div>
 	</header>
@@ -141,7 +153,7 @@
 					Telegram, which they already have.
 				</p>
 				<div class="cta-group">
-					<a class="cta" href={CONTACT}>Book a demo</a>
+					<a class="cta" href={SIGNUP_URL}>Start free trial</a>
 					<a class="cta-ghost" href="#how">See how it works</a>
 				</div>
 			</div>
@@ -261,6 +273,51 @@
 		</div>
 	</Band>
 
+	<!-- Price -->
+	<div id="price">
+		<Band label="Price" tone="primary">
+			<h2 class="wide">Ten cents a student, a month</h2>
+			<div class="two price-two">
+				<div class="tariff">
+					<p class="fig">
+						<span>$0.10</span>
+					</p>
+					<p class="tariff-unit">per active student, per month</p>
+					<a class="cta" href={SIGNUP_URL}>Start free trial</a>
+				</div>
+				<div class="prose">
+					<p>
+						Active students only. A student who leaves gets marked inactive, comes off every
+						roster, and stops counting the moment they do — so the bill follows the school year
+						down as well as up.
+					</p>
+					<p>
+						Pay monthly, or pay for ten months and get the year. Teachers, parents and messages
+						are not counted separately: a class of thirty costs the same whether its parents get
+						one message a term or one every day.
+					</p>
+				</div>
+			</div>
+
+			<ul class="reckoner">
+				{#each reckoner as row (row.students)}
+					<li>
+						<span class="reckoner-n">{row.students}</span>
+						<span class="reckoner-label">students</span>
+						<span class="reckoner-rule"></span>
+						<span class="reckoner-price">${row.monthly}<span class="per">/mo</span></span>
+					</li>
+				{/each}
+			</ul>
+
+			<p class="lapse-note">
+				Thirty days free to begin with, and no card to enter before it starts. If an invoice goes
+				unpaid the messages to parents stop — marking, history and reports keep working, and your
+				records stay yours.
+			</p>
+		</Band>
+	</div>
+
 	<!-- FAQ -->
 	<div id="faq">
 		<Band label="Questions">
@@ -281,10 +338,10 @@
 		<div class="close">
 			<h2>Have a look at it with your own classes</h2>
 			<p>
-				Tell me roughly how many classes and students you have and it gets set up with your real
-				timetable — so you are looking at your school, not a demo account.
+				Set up your classes and start marking attendance today — 30 days free, no card required.
+				You're looking at your own school from the first minute, not a demo account.
 			</p>
-			<a class="cta-invert" href={CONTACT}>Book a demo</a>
+			<a class="cta-invert" href={SIGNUP_URL}>Start free trial</a>
 		</div>
 	</Band>
 
@@ -448,6 +505,87 @@
 
 	.fig-note {
 		margin-top: 0.4rem;
+		font-size: 0.875rem;
+		color: var(--ink-soft);
+	}
+
+	/* Price -------------------------------------------------------------- */
+
+	.price-two {
+		margin-top: 1.5rem;
+	}
+
+	/* The one figure on the page that isn't a whole number, and so the one that
+	   can't be set in the mono face — Plex Mono gives the decimal point a full
+	   character cell, which reads as "$0 . 20". */
+	.tariff .fig span {
+		font-family: var(--font-sans);
+		font-size: clamp(2.75rem, 6vw, 3.75rem);
+		letter-spacing: -0.04em;
+	}
+
+	.tariff-unit {
+		margin-top: 0.3rem;
+		font-family: var(--font-mono);
+		font-size: 0.75rem;
+		letter-spacing: 0.04em;
+		color: var(--ink-soft);
+	}
+
+	.tariff .cta {
+		margin-top: 1.5rem;
+	}
+
+	/* A reckoner, not a plan comparison — the same one price applied to three
+	   sizes of school, so an owner reads their own number off it directly. */
+	.reckoner {
+		margin-top: 2.5rem;
+		padding-top: 1.25rem;
+		border-top: 1px solid var(--rule);
+		list-style: none;
+		display: grid;
+		gap: 0.6rem;
+		max-width: 26rem;
+	}
+
+	.reckoner li {
+		display: flex;
+		align-items: baseline;
+		gap: 0.5rem;
+		font-family: var(--font-mono);
+		font-size: 0.8125rem;
+	}
+
+	.reckoner-n {
+		font-weight: 600;
+		color: var(--ink);
+		font-variant-numeric: tabular-nums;
+	}
+
+	.reckoner-label {
+		color: var(--ink-faint);
+	}
+
+	.reckoner-rule {
+		flex: 1;
+		border-bottom: 1px dotted var(--rule);
+		transform: translateY(-0.2em);
+	}
+
+	.reckoner-price {
+		font-weight: 600;
+		color: var(--ink);
+		font-variant-numeric: tabular-nums;
+	}
+
+	.reckoner-price .per {
+		font-weight: 400;
+		color: var(--ink-faint);
+	}
+
+	.lapse-note {
+		margin-top: 2rem;
+		max-width: 34rem;
 		font-size: 0.875rem;
 		color: var(--ink-soft);
 	}
