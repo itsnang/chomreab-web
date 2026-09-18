@@ -2,16 +2,35 @@ import { expect, test } from '@playwright/test';
 import AxeBuilder from '@axe-core/playwright';
 
 test.describe('landing page', () => {
-	test('states the offer and points the CTA at a real contact route', async ({ page }) => {
+	test('states the offer and points every CTA at signup', async ({ page }) => {
 		await page.goto('/');
 
 		await expect(page.getByRole('heading', { level: 1 })).toContainText('A teacher taps');
 
-		// Two CTAs (header and closing section); both must actually go somewhere.
-		const ctas = page.getByRole('link', { name: 'Book a demo' });
-		await expect(ctas).toHaveCount(3);
+		// Header, hero, price and closing section; all four must reach signup —
+		// there is no demo-booking route any more, the trial is self-serve.
+		const ctas = page.getByRole('link', { name: 'Start free trial' });
+		await expect(ctas).toHaveCount(4);
 		for (const href of await ctas.evaluateAll((els) => els.map((e) => e.getAttribute('href')))) {
-			expect(href).toMatch(/^mailto:.+@.+/);
+			expect(href).toMatch(/\/signup$/);
+		}
+	});
+
+	test('states the price and what a real-sized school pays', async ({ page }) => {
+		await page.goto('/');
+
+		await expect(page.getByRole('heading', { name: /Ten cents a student/ })).toBeVisible();
+		await expect(page.getByText('per active student, per month')).toBeVisible();
+
+		// The reckoner is the useful part — an owner reads their own number off
+		// it, so the arithmetic has to actually be right.
+		for (const [students, monthly] of [
+			['60', '$6'],
+			['150', '$15'],
+			['400', '$40']
+		]) {
+			const row = page.locator('.reckoner li').filter({ hasText: `${students} students` });
+			await expect(row).toContainText(monthly);
 		}
 	});
 
