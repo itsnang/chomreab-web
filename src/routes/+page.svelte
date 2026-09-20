@@ -50,7 +50,7 @@
 	   There are no customers yet, and inventing traction is the one thing a
 	   page like this can do that can't be walked back. */
 	const facts = [
-		{ figure: '3', unit: 'taps', note: 'to mark one student — present, late or absent.' },
+		{ figure: '3', unit: 'taps', note: 'to mark one student as present, late or absent.' },
 		{ figure: '0', unit: 'apps', note: 'for a parent to install. The message arrives in Telegram.' },
 		{ figure: '20', unit: 'days', note: 'of attendance history behind every rate you see.' }
 	];
@@ -64,19 +64,19 @@
 		{
 			n: '02',
 			head: 'The parent hears',
-			body: 'A Telegram message the moment the register is saved. Nothing is sent for a student left unmarked.'
+			body: 'A Telegram message the moment the teacher saves the register. A student left unmarked triggers no message.'
 		},
 		{
 			n: '03',
 			head: 'The record keeps',
-			body: 'Every mark and every correction, with who made it and when. Answerable months later.'
+			body: 'Every mark and every correction, with who made it and when. You can answer for it months later.'
 		}
 	];
 
 	const faqs = [
 		{
 			q: 'What if a parent does not use Telegram?',
-			a: 'Then they will not receive messages, and the register still works exactly as it does today — attendance is recorded either way. In practice Telegram is already on almost every phone, which is why it was chosen over SMS, which costs money per message, or an app, which nobody would install.'
+			a: 'Then they will not receive messages, and the register works as it does today. Teachers record attendance either way. In practice Telegram is already on almost every phone. We chose it over SMS, which costs money per message, and over an app, which nobody would install.'
 		},
 		{
 			q: 'How does a parent get connected?',
@@ -84,15 +84,15 @@
 		},
 		{
 			q: 'Do teachers need training?',
-			a: 'The register screen is a list of names and three buttons. If a teacher can use a phone, they can mark attendance. The parts that need explaining — adding students, generating codes — are yours, not theirs.'
+			a: 'The register screen is a list of names and three buttons. If a teacher can use a phone, they can mark attendance. You handle the parts that need explaining, like adding students and generating codes.'
 		},
 		{
 			q: 'What happens when a teacher marks the wrong student?',
-			a: 'They change it, and the correction is recorded alongside the original — what it was, what it became, who changed it, when. Nothing is quietly overwritten.'
+			a: 'They change it, and Chomreab records the correction alongside the original: what it was, what it became, who changed it, and when. Nothing is overwritten without a trace.'
 		},
 		{
 			q: 'Can I try it with my own classes?',
-			a: 'Yes — sign up and you are setting up your own classes and students from the first screen, on a 30-day free trial. No sample data, no call needed first.'
+			a: 'Yes. Sign up and you are setting up your own classes and students from the first screen, on a 30-day free trial. There is no sample data, and you do not need a call first.'
 		}
 	];
 </script>
@@ -148,9 +148,9 @@
 				<p class="eyebrow">Attendance · Telegram</p>
 				<h1>A teacher taps three times. A parent knows before the lesson ends.</h1>
 				<p class="sub">
-					Chomreab is attendance for schools and tutoring centres. The register is marked on a
-					phone, and the families who need to hear about it hear about it the same minute — on
-					Telegram, which they already have.
+					Chomreab is attendance for schools and tutoring centres. A teacher marks the register
+					on a phone, and the parents who need to know hear the same minute, on Telegram, which
+					they already have.
 				</p>
 				<div class="cta-group">
 					<a class="cta" href={SIGNUP_URL}>Start free trial</a>
@@ -158,7 +158,7 @@
 				</div>
 			</div>
 			<div class="hero-demo">
-				<Figure caption="Fig. 1 — today's register, Grade 3A" live>
+				<Figure caption="Fig. 1: today's register, Grade 3A" live>
 					<RosterDemo />
 				</Figure>
 			</div>
@@ -190,7 +190,7 @@
 				</p>
 				<p>
 					A parent finds out their child missed Tuesday when the month's sheet comes home, or when
-					someone finds time to call, or not at all. By then the reason is gone — nobody remembers
+					someone finds time to call, or not at all. By then the reason is gone. Nobody remembers
 					why, and there is nothing left to ask about.
 				</p>
 			</div>
@@ -222,7 +222,7 @@
 				<div class="prose">
 					<p>
 						Plain messages, in the chat app they already have open. This is the whole
-						parent-facing product — no account to make, no password to lose.
+						parent-facing product. There is no account to make and no password to lose.
 					</p>
 					<p>
 						A note the teacher adds travels with the message. That one line is usually the
@@ -230,7 +230,7 @@
 					</p>
 				</div>
 			</div>
-			<Figure caption="Fig. 2 — one parent's morning">
+			<Figure caption="Fig. 2: one parent's morning">
 			<div class="thread" bind:this={threadEl}>
 				<Bubble text="You're now linked to Sokha." time="07:02" />
 				<Bubble text="Sokha was marked ✅ present on 2026-09-15." time="07:41" />
@@ -288,13 +288,12 @@
 				<div class="prose">
 					<p>
 						Active students only. A student who leaves gets marked inactive, comes off every
-						roster, and stops counting the moment they do — so the bill follows the school year
-						down as well as up.
+						roster, and stops counting that same day. Your next bill drops to match.
 					</p>
 					<p>
-						Pay monthly, or pay for ten months and get the year. Teachers, parents and messages
-						are not counted separately: a class of thirty costs the same whether its parents get
-						one message a term or one every day.
+						Pay monthly, or pay for ten months and get the year. We do not count teachers,
+						parents or messages separately. A class of thirty costs the same whether its
+						parents get one message a term or one every day.
 					</p>
 				</div>
 			</div>
@@ -312,8 +311,8 @@
 
 			<p class="lapse-note">
 				Thirty days free to begin with, and no card to enter before it starts. If an invoice goes
-				unpaid the messages to parents stop — marking, history and reports keep working, and your
-				records stay yours.
+				unpaid, the messages to parents stop. Marking, history and reports keep working, and you
+				keep every record.
 			</p>
 		</Band>
 	</div>
@@ -338,8 +337,8 @@
 		<div class="close">
 			<h2>Have a look at it with your own classes</h2>
 			<p>
-				Set up your classes and start marking attendance today — 30 days free, no card required.
-				You're looking at your own school from the first minute, not a demo account.
+				Set up your classes and start marking attendance today. 30 days free, no card required.
+				You are looking at your own school from the first minute.
 			</p>
 			<a class="cta-invert" href={SIGNUP_URL}>Start free trial</a>
 		</div>
